@@ -7,7 +7,7 @@
     <h2>Your Requests</h2>
     <ul>
         {% for request in requests %}
-            <li>{{ request.description }} - {{ request.created_at }}</li>
+            <li>{{ request.description }} - {{ request.created_at }} Статус: {{ request.get_status_display }}</li>
         {% endfor %}
     </ul>
     <a href="{% url 'create_request' %}">Create New Request</a>
