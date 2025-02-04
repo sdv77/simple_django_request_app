@@ -4,6 +4,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import RequestForm
 from .models import Request, Device
 
+def home_view(request):
+    return render(request, 'home.html')
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
