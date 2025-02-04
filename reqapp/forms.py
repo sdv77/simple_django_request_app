@@ -1,7 +1,7 @@
 from django import forms
-from .models import Request
+from .models import Request, Device
 
 class RequestForm(forms.ModelForm):
     class Meta:
         model = Request
-        fields = ['description']
+        fields = ['device', 'description']

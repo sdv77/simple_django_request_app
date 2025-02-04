@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RequestForm
-from .models import Request
+from .models import Request, Device
 
 def login_view(request):
     if request.method == 'POST':
