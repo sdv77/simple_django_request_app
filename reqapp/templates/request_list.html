@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Request List</title>
+</head>
+<body>
+    <h2>Your Requests</h2>
+    <ul>
+        {% for request in requests %}
+            <li>{{ request.description }} - {{ request.created_at }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'create_request' %}">Create New Request</a>
+</body>
+</html>
