@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Request, Device, Category
+from .models import Request, Device, Category, Audience
 
 class RequestAdmin(admin.ModelAdmin):
     list_display = ('user', 'device', 'description', 'status', 'created_at')
@@ -10,6 +10,11 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
     search_fields = ('name',)
 
+class AudienceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description')
+    search_fields = ('name',)
+
+admin.site.register(Audience, AudienceAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Request, RequestAdmin)
 admin.site.register(Device)
