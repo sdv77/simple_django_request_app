@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RequestForm
-from .models import Request, Device
+from .models import Request, Device, Category
+from django.http import JsonResponse
 
 def home_view(request):
     return render(request, 'home.html')
@@ -46,3 +47,8 @@ def request_list(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def load_devices(request):
+    category_id = request.GET.get('category_id')
+    devices = Device.objects.filter(category_id=category_id).order_by('name')
+    return JsonResponse(list(devices.values('id', 'name')), safe=False)
