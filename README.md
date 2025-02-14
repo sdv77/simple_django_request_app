@@ -1,4 +1,4 @@
-# Just a little app for college practive
+# Just a little app for college practice
 
  ## Home page
 ![изображение](https://github.com/user-attachments/assets/099fcf6f-f3ee-4243-ac1c-c298b05408b5)
