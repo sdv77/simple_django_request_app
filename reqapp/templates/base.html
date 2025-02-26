@@ -23,8 +23,12 @@
                         <a class="nav-link" href="{% url 'request_list' %}">Мои заявки📂</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'closed_requests' %}">Закрытые заявки📂</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Выйти🔑</a>
                     </li>
+                    
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Авторизоваться🔑</a>

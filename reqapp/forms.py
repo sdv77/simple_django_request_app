@@ -20,3 +20,6 @@ class RequestForm(forms.ModelForm):
             self.fields['device'].queryset = self.instance.category.devices.order_by('name')
         else:
             self.fields['device'].queryset = Device.objects.none()
+
+class ChangeStatusForm(forms.Form):
+    status = forms.ChoiceField(choices=Request.STATUS_CHOICES)
