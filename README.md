@@ -1,5 +1,9 @@
 # Just a little app for college practice
 
+### Make this command before start project
+
+pip install -r requirements.txt
+
  ## Home page
 ![изображение](https://github.com/user-attachments/assets/099fcf6f-f3ee-4243-ac1c-c298b05408b5)
 
