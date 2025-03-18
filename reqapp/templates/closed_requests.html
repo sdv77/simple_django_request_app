@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Closed Requests{% endblock %}
+{% block title %}Закрытые заявки{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -8,33 +8,33 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header text-center">
-                    <h2>Закрытые заявки📂</h2>
+                    <h2>Закрытые заявки</h2>
                 </div>
                 <div class="card-body">
-                    <ul class="list-group">
-                        {% for closed_request in closed_requests %}
-                            <li class="list-group-item">
-                                <div class="d-flex flex-column">
-                                    <strong>Устройство:</strong>
-                                    {% if closed_request.request.device %}
-                                        {{ closed_request.request.device.name }}
-                                    {% else %}
-                                        Нет Устройства
-                                    {% endif %}
-                                    <strong>Описание заявки:</strong>
-                                    {{ closed_request.request.description }}
-                                    <strong>Статус:</strong>
-                                    {{ closed_request.request.get_status_display }}
-                                    <strong>Создана:</strong>
-                                    {{ closed_request.request.created_at }}
-                                    <strong>Закрыта:</strong>
-                                    {{ closed_request.closed_at }}
-                                </div>
-                            </li>
-                        {% empty %}
-                            <li class="list-group-item text-center">Закрытых заявок нету.</li>
-                        {% endfor %}
-                    </ul>
+                    {% if closed_requests %}
+                        <ul class="list-group">
+                            {% for closed_request in closed_requests %}
+                                <li class="list-group-item">
+                                    <div class="d-flex flex-column">
+                                        <strong>Устройство:</strong>
+                                        {% if closed_request.request.device %}
+                                            {{ closed_request.request.device.name }}
+                                        {% else %}
+                                            Нет устройства
+                                        {% endif %}
+                                        <strong>Описание:</strong>
+                                        {{ closed_request.request.description }}
+                                        <strong>Статус:</strong>
+                                        {{ closed_request.request.get_status_display }}
+                                        <strong>Дата закрытия:</strong>
+                                        {{ closed_request.closed_at }}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-center">Нет закрытых заявок.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>

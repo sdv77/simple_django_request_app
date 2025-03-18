@@ -15,7 +15,7 @@ class RequestForm(forms.ModelForm):
                 category_id = int(self.data.get('category'))
                 self.fields['device'].queryset = Device.objects.filter(category_id=category_id).order_by('name')
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty Device queryset
+                pass
         elif self.instance.pk:
             self.fields['device'].queryset = self.instance.category.devices.order_by('name')
         else:
