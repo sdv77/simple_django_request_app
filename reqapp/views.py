@@ -16,10 +16,15 @@ def home_view(request):
     return render(request, 'home.html')
 
 # Страница создания заявки
+# views.py
 def create_request(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    
+
+    # Если пользователь техник, перенаправляем его
+    if request.user.groups.filter(name='Technician').exists():
+        return redirect('request_list')  # Перенаправляем на страницу с заявками
+
     categories = Category.objects.all()
 
     if request.method == 'POST':
@@ -28,14 +33,12 @@ def create_request(request):
             request_instance = form.save(commit=False)
             request_instance.user = request.user
             request_instance.save()
-            messages.success(request, 'Заявка успешно создана!')
             return redirect('request_list')
-        else:
-            messages.error(request, 'Ошибка при создании заявки.')
     else:
         form = RequestForm()
     
     return render(request, 'create_request.html', {'form': form, 'categories': categories})
+
 
 def change_status(request, request_id):
     if not request.user.is_authenticated:

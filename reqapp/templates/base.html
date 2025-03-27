@@ -16,9 +16,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'create_request' %}">Создать заявку📝</a>
-                    </li>
+                    {# Показываем "Создать заявку" только если пользователь НЕ техник #}
+                    {% if not user.groups.all.0.name == 'Technician' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'create_request' %}">Создать заявку📝</a>
+                        </li>
+                    {% endif %}
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'request_list' %}">Мои заявки📂</a>
                     </li>
