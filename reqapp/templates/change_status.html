@@ -11,6 +11,16 @@
                     <h2>Изменить статус заявки</h2>
                 </div>
                 <div class="card-body">
+                    <h5>Заявка: {{ request_instance.description }}</h5>
+                    <p><strong>Устройство:</strong> {% if request_instance.device %}{{ request_instance.device.name }}{% else %}Не указано{% endif %}</p>
+                    <p><strong>Текущий статус:</strong> {{ request_instance.get_status_display }}</p>
+                    
+                    {% if request_instance.technician %}
+                        <p><strong>Техник, принявший заявку:</strong> {{ request_instance.technician.first_name }} {{ request_instance.technician.last_name }}</p>
+                    {% else %}
+                        <p><strong>Техник не назначен.</strong></p>
+                    {% endif %}
+                    
                     <form method="post">
                         {% csrf_token %}
                         {{ form.as_p }}

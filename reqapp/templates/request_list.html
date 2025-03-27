@@ -21,13 +21,30 @@
                                     {% else %}
                                         Нет Устройства
                                     {% endif %}
+                                    
                                     <strong>Описание заявки:</strong>
                                     {{ request.description }}
+                                    
                                     <strong>Статус:</strong>
                                     {{ request.get_status_display }}
+                                    
+                                    {% if request.technician %}
+                                        <strong>Принята техником:</strong>
+                                        {{ request.technician.first_name }} {{ request.technician.last_name }}
+                                    {% endif %}
+                                    
                                     <strong>Создана:</strong>
                                     {{ request.created_at }}
-                                    <a href="{% url 'change_status' request.id %}" class="btn btn-secondary mt-2">Изменить статус</a>
+                                    
+                                    {% if request.device and request.device.is_deleted %}
+                                        <a href="{% url 'download_written_off_act' request.device.id %}" class="btn btn-primary mt-2">Скачать акт списания</a>
+                                    {% endif %}
+                                    
+                                    {% if request.status != 'closed' %}
+                                        {% if technician %}
+                                            <a href="{% url 'change_status' request.id %}" class="btn btn-secondary mt-2">Изменить статус</a>
+                                        {% endif %}
+                                    {% endif %}
                                 </div>
                             </li>
                         {% empty %}

@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.timezone import now
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -23,7 +22,6 @@ class Device(models.Model):
     code = models.CharField(max_length=100, blank=True, null=True, unique=True)
     audience = models.ForeignKey(Audience, on_delete=models.SET_NULL, blank=True, null=True, related_name='devices')
 
-    # Новые поля
     equipment_number = models.CharField(max_length=50, unique=True, blank=True, null=True)
     purchase_date = models.DateField(blank=True, null=True)
     initial_cost = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
@@ -47,14 +45,19 @@ class Request(models.Model):
     description = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
     created_at = models.DateTimeField(auto_now_add=True)
+    technician = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='technician_requests')  # Техник, который принял заявку
 
-    def set_status(self, new_status):
+    def set_status(self, new_status, technician=None):
         self.status = new_status
+        if technician:
+            self.technician = technician  # Сохраняем технику
         self.save()
 
         if new_status == 'closed':
             # Создаем запись о закрытой заявке
             ClosedRequest.objects.get_or_create(request=self)
+
+
 
 class ClosedRequest(models.Model):
     request = models.OneToOneField(Request, on_delete=models.CASCADE, related_name='closed_request')

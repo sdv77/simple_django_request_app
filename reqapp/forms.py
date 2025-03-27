@@ -1,5 +1,7 @@
 from django import forms
 from .models import Request, Device, Category
+from django.contrib.auth.models import User
+
 
 class RequestForm(forms.ModelForm):
     category = forms.ModelChoiceField(queryset=Category.objects.all(), required=False, label='Категория')
@@ -22,4 +24,7 @@ class RequestForm(forms.ModelForm):
             self.fields['device'].queryset = Device.objects.none()
 
 class ChangeStatusForm(forms.Form):
-    status = forms.ChoiceField(choices=Request.STATUS_CHOICES)
+    STATUS_CHOICES = Request.STATUS_CHOICES
+
+    status = forms.ChoiceField(choices=STATUS_CHOICES)
+    technician = forms.ModelChoiceField(queryset=User.objects.filter(groups__name='Technician'), required=True)  # Только техники могут изменять статус

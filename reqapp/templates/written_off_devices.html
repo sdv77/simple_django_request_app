@@ -8,25 +8,17 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header text-center">
-                    <h2>Список списанных устройств</h2>
+                    <h2>Списанные устройства</h2>
                 </div>
                 <div class="card-body">
                     {% if written_off_devices %}
                         <ul class="list-group">
-                            {% for written_off_device in written_off_devices %}
+                            {% for device in written_off_devices %}
                                 <li class="list-group-item">
                                     <div class="d-flex flex-column">
-                                        <strong>Устройство:</strong>
-                                        {{ written_off_device.device.name }}
-                                        <strong>Дата списания:</strong>
-                                        {{ written_off_device.written_off_at }}
-                                        <strong>Уникальный номер оборудования:</strong>
-                                        {{ written_off_device.device.equipment_number|default:"Нет номера" }}
-                                        <strong>Местоположение:</strong>
-                                        {{ written_off_device.device.location|default:"Нет данных" }}
-                                        <a href="{% url 'download_written_off_act' written_off_device.device.id %}" class="btn btn-success mt-2">
-                                            Скачать акт списания
-                                        </a>
+                                        <strong>Устройство:</strong> {{ device.device.name }}
+                                        <strong>Дата списания:</strong> {{ device.written_off_at }}
+                                        <a href="{% url 'download_written_off_act' device.device.id %}" class="btn btn-primary mt-2">Скачать акт списания</a>
                                     </div>
                                 </li>
                             {% endfor %}
