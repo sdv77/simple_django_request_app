@@ -33,6 +33,7 @@ class Device(models.Model):
     def __str__(self):
         return self.name
 
+# models.py
 class Request(models.Model):
     STATUS_CHOICES = (
         ('open', 'Открыта'),
@@ -45,26 +46,32 @@ class Request(models.Model):
     description = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
     created_at = models.DateTimeField(auto_now_add=True)
-    technician = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='technician_requests')  # Техник, который принял заявку
+    technician = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='technician_requests')  # Поле для техники
 
     def set_status(self, new_status, technician=None):
         self.status = new_status
         if technician:
-            self.technician = technician  # Сохраняем технику
+            self.technician = technician
         self.save()
 
         if new_status == 'closed':
             # Создаем запись о закрытой заявке
-            ClosedRequest.objects.get_or_create(request=self)
+            closed_request = ClosedRequest.objects.get_or_create(request=self)[0]
+            closed_request.technician = technician  # Добавляем технику, который принял заявку
+            closed_request.save()  # Сохраняем изменения
 
 
 
+
+# models.py
 class ClosedRequest(models.Model):
     request = models.OneToOneField(Request, on_delete=models.CASCADE, related_name='closed_request')
     closed_at = models.DateTimeField(auto_now_add=True)
+    technician = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='closed_requests')  # Техник, принявший заявку
 
     def __str__(self):
         return f'Closed Request: {self.request} at {self.closed_at}'
+
 
 class WrittenOffDevice(models.Model):
     device = models.OneToOneField(Device, on_delete=models.CASCADE, related_name='written_off_device')

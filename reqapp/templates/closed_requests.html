@@ -28,6 +28,11 @@
                                         {{ closed_request.request.get_status_display }}
                                         <strong>Дата закрытия:</strong>
                                         {{ closed_request.closed_at }}
+                                        
+                                        {% if closed_request.technician %}
+                                            <strong>Техник, принявший заявку:</strong>
+                                            {{ closed_request.technician.first_name }} {{ closed_request.technician.last_name }}
+                                        {% endif %}
                                     </div>
                                 </li>
                             {% endfor %}

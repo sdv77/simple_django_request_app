@@ -1,4 +1,6 @@
 from docx import Document
+from django.db.models import Q
+
 import os
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
@@ -78,11 +80,22 @@ def request_list(request):
 
 
 # Список закрытых заявок
+# views.py
 def closed_requests(request):
     if not request.user.is_authenticated:
         return redirect('login')
     
-    closed_requests = ClosedRequest.objects.filter(request__user=request.user).order_by('-closed_at')
+    # Если пользователь — техник, он видит заявки, которые он закрыл
+    if request.user.groups.filter(name='Technician').exists():
+        closed_requests = ClosedRequest.objects.filter(
+            Q(request__technician=request.user)
+        ).order_by('-closed_at')
+    else:
+        # Обычный пользователь видит только свои заявки
+        closed_requests = ClosedRequest.objects.filter(
+            request__user=request.user
+        ).order_by('-closed_at')
+
     return render(request, 'closed_requests.html', {'closed_requests': closed_requests})
 
 # Страница для выхода пользователя
